@@ -22,6 +22,8 @@ import { SettingTabContent } from "@/components/setting-tab-content";
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
   const [allEntries, setAllEntries] = useState(null);
+  const [coloredHeatmap, setColoredHeatmap] = useState(true);
+  const [allSectionsMandatory, setAllSectionsMandatory] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -146,10 +148,9 @@ export default function App() {
         </TabsContent>
         <TabsContent value="settings">
           <SettingTabContent
-            curEntry={curEntry} setCurEntry={setCurEntry}
-            allEntries={allEntries} setAllEntries={setAllEntries}
-            errorMessage={errorMessage} setErrorMessage={setErrorMessage}
-            successMessage={successMessage} setSuccessMessage={setSuccessMessage}
+            coloredHeatmap={coloredHeatmap} setColoredHeatmap={setColoredHeatmap}
+            allSectionsMandatory={allSectionsMandatory} setAllSectionsMandatory={setAllSectionsMandatory}
+            clearJournalFunc={clearJournalHandler}
           />
         </TabsContent>
       </Tabs>
