@@ -8,15 +8,16 @@ import {
   Home,
   ChartNoAxesCombined,
   Settings,
-  PenTool,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { HomeTabContent } from "@/components/home-tab-content";
+import { OverviewTabContent } from "@/components/overview-tab-content";
+import { SettingTabContent } from "@/components/setting-tab-content";
 
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
@@ -128,106 +129,30 @@ export default function App() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="home">
-          {curEntry ? (
-            <>
-              <div className="pb-2 font-bold">You have written something</div>
-              <Button className="h-6 rounded-md bg-accent text-xs">
-                <PenTool size={16} />
-                Start editing
-              </Button>
-            </>
-          ) : (
-            <>
-              <div className="pb-2 font-bold">
-                You haven't written anything yet
-              </div>
-              <Button className="h-6 rounded-md bg-accent text-xs hover:bg-accent">
-                <PenTool size={16} />
-                Start writing
-              </Button>
-            </>
-          )}
+          <HomeTabContent
+            curEntry={curEntry} setCurEntry={setCurEntry}
+            allEntries={allEntries} setAllEntries={setAllEntries}
+            errorMessage={errorMessage} setErrorMessage={setErrorMessage}
+            successMessage={successMessage} setSuccessMessage={setSuccessMessage}
+          />
         </TabsContent>
-        <TabsContent value="overview">overview page</TabsContent>
-        <TabsContent value="settings">settings page</TabsContent>
+        <TabsContent value="overview">
+          <OverviewTabContent
+            curEntry={curEntry} setCurEntry={setCurEntry}
+            allEntries={allEntries} setAllEntries={setAllEntries}
+            errorMessage={errorMessage} setErrorMessage={setErrorMessage}
+            successMessage={successMessage} setSuccessMessage={setSuccessMessage}
+          />
+        </TabsContent>
+        <TabsContent value="settings">
+          <SettingTabContent
+            curEntry={curEntry} setCurEntry={setCurEntry}
+            allEntries={allEntries} setAllEntries={setAllEntries}
+            errorMessage={errorMessage} setErrorMessage={setErrorMessage}
+            successMessage={successMessage} setSuccessMessage={setSuccessMessage}
+          />
+        </TabsContent>
       </Tabs>
     </div>
   );
-
-  // return (
-  //   <div className="App">
-  //     <Tabs defaultValue="home" className="w-full">
-  //       <TabsList>
-  //         <TabsTrigger value="home">Home</TabsTrigger>
-  //         <TabsTrigger value="report">Report</TabsTrigger>
-  //         <TabsTrigger value="misc">Misc</TabsTrigger>
-  //       </TabsList>
-  //       <TabsContent value="home">
-  //         <div className="text-lg">HOME TAB (not implemented)</div>
-  //       </TabsContent>
-  //       <TabsContent value="report">
-  //         <div className="text-lg">REPORT TAB (not implemented)</div>
-  //       </TabsContent>
-  //       <TabsContent value="misc">
-  //         <div className="flex flex-col gap-2">
-  //           <Button
-  //             onClick={() => alert('not implemented yet')}
-  //             variant="outline"
-  //             className="rounded-md hover:border-[#646cff] border-[1px] px-4 py-2 font-semibold transition duration-300"
-  //           >
-  //             Theme Selector
-  //           </Button>
-  //           <Button
-  //             onClick={clearJournalHandler}
-  //             variant="outline"
-  //             className="rounded-md hover:border-[#646cff] border-[1px] px-4 py-2 font-semibold transition duration-300"
-  //           >
-  //             Clear Journal
-  //           </Button>
-  //         </div>
-  //       </TabsContent>
-  //     </Tabs>
-
-  //     <div className="w-full text-red-900 font-bold text-xl pt-5">
-  //       EVERYTHING BELOW SHOULD BE REMOVED
-  //     </div>
-
-  //     {/* Journal Input Section */}
-  //     <div style={{ marginBottom: "10px", width: "100%", maxWidth: "400px" }}>
-  //       <textarea
-  //         value={curEntry}
-  //         onChange={(e) => setCurEntry(e.target.value)}
-  //         placeholder="Write your journal entry..."
-  //         style={{
-  //           width: "100%",
-  //           minHeight: "100px",
-  //           margin: "10px 0",
-  //           padding: "10px",
-  //           backgroundColor: "#282c34",
-  //           color: "white",
-  //           border: "1px solid #61dafb",
-  //         }}
-  //       />
-  //     </div>
-
-  //     {/* Buttons Section */}
-  //     <div className="flex flex-col gap-2">
-  //       <Button variant="outline" onClick={saveEntryHandler}>Save Entry</Button>
-  //       <Button variant="outline" onClick={clearJournalHandler}>Clear Journal</Button>
-  //       <Button variant="outline" onClick={logAllEntries}>console.log(allEntries)</Button>
-  //     </div>
-
-  //     {/* Display Messages */}
-  //     {errorMessage && (
-  //       <div style={{ color: "red", marginTop: "20px" }}>
-  //         {errorMessage}
-  //       </div>
-  //     )}
-  //     {successMessage && (
-  //       <div style={{ color: "green", marginTop: "20px" }}>
-  //         {successMessage}
-  //       </div>
-  //     )}
-  //   </div>
-  // );
 }
