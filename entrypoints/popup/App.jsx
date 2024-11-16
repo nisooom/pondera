@@ -103,21 +103,21 @@ export default function App() {
       <Tabs defaultValue="home" className="pb-4 pt-3">
         <TabsList className="h-8 w-full rounded-3xl bg-secondary">
           <TabsTrigger
-            className="basis-1/3 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            className="flex basis-1/3 gap-2 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
             value="home"
           >
             <Home size={16} />
             Home
           </TabsTrigger>
           <TabsTrigger
-            className="basis-1/3 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            className="flex basis-1/3 gap-2 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
             value="overview"
           >
             <ChartNoAxesCombined size={16} />
             Overview
           </TabsTrigger>
           <TabsTrigger
-            className="basis-1/3 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            className="flex basis-1/3 gap-2 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
             value="settings"
           >
             <Settings size={16} />

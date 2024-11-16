@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { PenTool } from "lucide-react";
-
+import MoodHeatmap from "./heatmap";
 export const HomeTabContent = ({
   curEntry,
   setCurEntry,
@@ -41,19 +41,20 @@ export const HomeTabContent = ({
     setWriterWindow(newWindow);
   };
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-1 bg-red-300/0 px-4 py-2">
       <div className="pb-2 font-bold">
         {curEntry
           ? "You have written something"
           : "You haven't written anything yet"}
       </div>
       <Button
-        className="h-8 rounded-md bg-accent text-sm hover:bg-accent/90"
+        className="flex h-8 w-fit justify-start gap-1 rounded-sm bg-accent text-right text-sm opacity-100 hover:bg-secondary"
         onClick={openWritingTab}
       >
         <PenTool size={16} className="mr-2" />
         {curEntry ? "Start editing" : "Start writing"}
       </Button>
+      <MoodHeatmap />
     </div>
   );
 };
