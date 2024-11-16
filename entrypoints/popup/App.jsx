@@ -90,8 +90,8 @@ export default function App() {
           </div>
         </div>
       </div>
-      <Tabs className="py-3">
-        <TabsList className="w-full h-8 rounded-3xl" defaultValue="home">
+      <Tabs defaultValue="home" className="py-3">
+        <TabsList className="w-full h-8 rounded-3xl">
           <TabsTrigger className="data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background basis-1/3 text-sm" value="home">
             <Home size={16} />
             Home
