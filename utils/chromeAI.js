@@ -4,13 +4,15 @@ export const createTextSessionAndPrompt = async (text) => {
         const { available } = await ai.languageModel.capabilities();
         const session = await ai.languageModel.create();
         
-        console.log("Session created");
-
         if (available !== "no") {
+            console.log("Session created");
+            console.log(text);
+            console.log(session);
             const result = await session.prompt(
-                "return a mood that you think the person was in when they wrote the text" + text
+                "In just one Word. return a mood from the list - (Happy, Sad, Anxious, Angry, Frustrated, Neutral, Peaceful) that you think the person was in when they wrote the text" + text
             );
-
+            console.log("Prompted AI");
+            console.log(result);
             return { result};
         } else {
             return {
