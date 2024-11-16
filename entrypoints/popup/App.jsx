@@ -1,5 +1,5 @@
-import { useState } from "react";
-import "./App.css";
+import { useState, useEffect } from "react";
+import React from "react";
 import { saveEntry, getAllEntries, clearAllEntries } from "@/utils/backend";
 import { PonderaIcon } from "@/components/pondera-icon";
 import {
@@ -8,6 +8,7 @@ import {
   Home,
   ChartNoAxesCombined,
   Settings,
+  PenTool,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -18,16 +19,16 @@ import {
 import { HomeTabContent } from "@/components/home-tab-content";
 import { OverviewTabContent } from "@/components/overview-tab-content";
 import { SettingTabContent } from "@/components/setting-tab-content";
+import { Button } from "@/components/ui/button";
 
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
   const [allEntries, setAllEntries] = useState(null);
-
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [activeTab, setActiveTab] = useState("home");
+  const [writerWindow, setWriterWindow] = useState(null);
 
-  // first load all entries
-  // then try to load the current date's entry
   useEffect(() => {
     getAllEntries().then((entries) => {
       setAllEntries(entries);
@@ -37,53 +38,32 @@ export default function App() {
         setCurEntry(entry.entry);
       }
     });
+
+    // Clean up any existing writer window reference when main window closes
+    return () => {
+      if (writerWindow && !writerWindow.closed) {
+        writerWindow.close();
+      }
+    };
   }, []);
 
-  const saveEntryHandler = async () => {
-    if (!curEntry.trim()) {
-      setSuccessMessage("");
-      setErrorMessage("have something plz");
-      return;
-    }
+  // Listen for messages from writer window
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data.type === "ENTRY_SAVED") {
+        const { date, content } = event.data;
+        setAllEntries((prev) => ({
+          ...prev,
+          [date]: { entry: content, date },
+        }));
+        setCurEntry(content);
+        setSuccessMessage("Entry saved successfully");
+      }
+    };
 
-    const date = new Date().toISOString().split("T")[0];
-    const saved = await saveEntry(curEntry, date);
-    if (saved !== null) {
-      // optimistic updates
-      setAllEntries((prev) => ({
-        ...prev,
-        [date]: saved,
-      }));
-
-      // NOTE: it doesnt make sense to clear the input box after saving
-      // since they might edit it again
-      // setCurEntry("");
-      setSuccessMessage("Entry saved successfully");
-      setErrorMessage("");
-    } else {
-      setSuccessMessage("");
-      setErrorMessage("Failed to save entry");
-    }
-  };
-
-  const clearJournalHandler = async () => {
-    try {
-      await clearAllEntries();
-      setCurEntry("");
-      setAllEntries({});
-      setSuccessMessage("Journal cleared successfully!");
-      setErrorMessage("");
-    } catch (error) {
-      setSuccessMessage("");
-      setErrorMessage("Failed to clear journal.");
-    }
-  };
-
-  const logAllEntries = () => {
-    console.log(allEntries);
-    setSuccessMessage("");
-    setErrorMessage("");
-  };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   return (
     <div className="px-3 py-2">
@@ -104,7 +84,11 @@ export default function App() {
           </div>
         </div>
       </div>
-      <Tabs defaultValue="home" className="pb-4 pt-3">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="pb-4 pt-3"
+      >
         <TabsList className="h-8 w-full rounded-3xl">
           <TabsTrigger
             className="basis-1/3 text-sm data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
@@ -130,26 +114,38 @@ export default function App() {
         </TabsList>
         <TabsContent value="home">
           <HomeTabContent
-            curEntry={curEntry} setCurEntry={setCurEntry}
-            allEntries={allEntries} setAllEntries={setAllEntries}
-            errorMessage={errorMessage} setErrorMessage={setErrorMessage}
-            successMessage={successMessage} setSuccessMessage={setSuccessMessage}
+            curEntry={curEntry}
+            setCurEntry={setCurEntry}
+            allEntries={allEntries}
+            setAllEntries={setAllEntries}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            successMessage={successMessage}
+            setSuccessMessage={setSuccessMessage}
           />
         </TabsContent>
         <TabsContent value="overview">
           <OverviewTabContent
-            curEntry={curEntry} setCurEntry={setCurEntry}
-            allEntries={allEntries} setAllEntries={setAllEntries}
-            errorMessage={errorMessage} setErrorMessage={setErrorMessage}
-            successMessage={successMessage} setSuccessMessage={setSuccessMessage}
+            curEntry={curEntry}
+            setCurEntry={setCurEntry}
+            allEntries={allEntries}
+            setAllEntries={setAllEntries}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            successMessage={successMessage}
+            setSuccessMessage={setSuccessMessage}
           />
         </TabsContent>
         <TabsContent value="settings">
           <SettingTabContent
-            curEntry={curEntry} setCurEntry={setCurEntry}
-            allEntries={allEntries} setAllEntries={setAllEntries}
-            errorMessage={errorMessage} setErrorMessage={setErrorMessage}
-            successMessage={successMessage} setSuccessMessage={setSuccessMessage}
+            curEntry={curEntry}
+            setCurEntry={setCurEntry}
+            allEntries={allEntries}
+            setAllEntries={setAllEntries}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            successMessage={successMessage}
+            setSuccessMessage={setSuccessMessage}
           />
         </TabsContent>
       </Tabs>
