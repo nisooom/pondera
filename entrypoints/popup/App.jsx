@@ -1,14 +1,10 @@
 import { useState } from "react";
 import "./App.css";
 import { saveEntry, getAllEntries, clearAllEntries } from "@/utils/backend";
+import { PonderaIcon } from "@/components/pondera-icon";
+import { X, Flame, Home, ChartNoAxesCombined, Settings, PenTool } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { PonderaIcon } from "@/components/pondera-icon";
-import { X } from "lucide-react";
-import { Flame } from "lucide-react";
-import { Home } from "lucide-react";
-import { ChartNoAxesCombined } from "lucide-react";
-import { Settings } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function App() {
@@ -98,7 +94,7 @@ export default function App() {
           </div>
         </div>
       </div>
-      <Tabs defaultValue="home" className="py-3">
+      <Tabs defaultValue="home" className="pt-3 pb-4">
         <TabsList className="w-full h-8 rounded-3xl">
           <TabsTrigger className="data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background basis-1/3 text-sm" value="home">
             <Home size={16} />
@@ -114,7 +110,23 @@ export default function App() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="home">
-          home page
+          {
+            curEntry
+            ? (<>
+              <div className="font-bold pb-2">You have written something</div>
+              <Button className="bg-accent rounded-md text-xs h-6">
+                <PenTool size={16} />
+                Start editing
+              </Button>
+            </>) :
+            (<>
+              <div className="font-bold pb-2">You haven't written anything yet</div>
+              <Button className="bg-accent rounded-md text-xs h-6">
+                <PenTool size={16} />
+                Start writing
+              </Button>
+            </>)
+          }
         </TabsContent>
         <TabsContent value="overview">
           overview page
