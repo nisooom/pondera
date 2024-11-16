@@ -9,6 +9,7 @@ import { Flame } from "lucide-react";
 import { Home } from "lucide-react";
 import { ChartNoAxesCombined } from "lucide-react";
 import { Settings } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
@@ -81,10 +82,17 @@ export default function App() {
       <div className="flex justify-between">
         <PonderaIcon />
         <div className="flex gap-1 items-center">
-          <div className="bg-secondary rounded-sm p-1 flex text-primary font-bold text-sm h-min">
-            23
-            <Flame className="fill-primary" size={20} />
-          </div>
+          <Tooltip>
+            <TooltipTrigger>
+            <div className="bg-secondary rounded-sm p-1 flex text-primary font-bold text-sm h-min">
+              23
+              <Flame className="fill-primary" size={20} />
+            </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              Continue your streak pls
+            </TooltipContent>
+          </Tooltip>
           <div className="bg-secondary rounded-sm p-1 text-primary font-bold text-sm h-min">
             <X size={20} />
           </div>
