@@ -2,10 +2,21 @@ import { useState } from "react";
 import "./App.css";
 import { saveEntry, getAllEntries, clearAllEntries } from "@/utils/backend";
 import { PonderaIcon } from "@/components/pondera-icon";
-import { X, Flame, Home, ChartNoAxesCombined, Settings, PenTool } from "lucide-react";
+import {
+  X,
+  Flame,
+  Home,
+  ChartNoAxesCombined,
+  Settings,
+  PenTool,
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
@@ -19,13 +30,13 @@ export default function App() {
   useEffect(() => {
     getAllEntries().then((entries) => {
       setAllEntries(entries);
-      const date = new Date().toISOString().split('T')[0];
+      const date = new Date().toISOString().split("T")[0];
       const entry = entries[date];
       if (entry) {
         setCurEntry(entry.entry);
       }
-    })
-  }, [])
+    });
+  }, []);
 
   const saveEntryHandler = async () => {
     if (!curEntry.trim()) {
@@ -34,14 +45,14 @@ export default function App() {
       return;
     }
 
-    const date = new Date().toISOString().split('T')[0];
+    const date = new Date().toISOString().split("T")[0];
     const saved = await saveEntry(curEntry, date);
     if (saved !== null) {
       // optimistic updates
       setAllEntries((prev) => ({
         ...prev,
         [date]: saved,
-      }))
+      }));
 
       // NOTE: it doesnt make sense to clear the input box after saving
       // since they might edit it again
@@ -77,63 +88,68 @@ export default function App() {
     <div className="px-3 py-2">
       <div className="flex justify-between">
         <PonderaIcon />
-        <div className="flex gap-1 items-center">
+        <div className="flex items-center gap-1">
           <Tooltip>
             <TooltipTrigger>
-            <div className="bg-secondary rounded-sm p-1 flex text-primary font-bold text-sm h-min">
-              23
-              <Flame className="fill-primary" size={20} />
-            </div>
+              <div className="flex h-min rounded-sm bg-secondary p-1 text-sm font-bold text-primary">
+                23
+                <Flame className="fill-primary" size={20} />
+              </div>
             </TooltipTrigger>
-            <TooltipContent>
-              Continue your streak pls
-            </TooltipContent>
+            <TooltipContent>Continue your streak pls</TooltipContent>
           </Tooltip>
-          <div className="bg-secondary rounded-sm p-1 text-primary font-bold text-sm h-min">
-            <X size={20} />
+          <div className="h-min cursor-pointer rounded-sm bg-secondary p-1 text-sm font-bold text-primary">
+            <X size={20} onClick={() => window.close()} />
           </div>
         </div>
       </div>
-      <Tabs defaultValue="home" className="pt-3 pb-4">
-        <TabsList className="w-full h-8 rounded-3xl">
-          <TabsTrigger className="data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background basis-1/3 text-sm" value="home">
+      <Tabs defaultValue="home" className="pb-4 pt-3">
+        <TabsList className="h-8 w-full rounded-3xl">
+          <TabsTrigger
+            className="basis-1/3 text-sm data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            value="home"
+          >
             <Home size={16} />
             Home
           </TabsTrigger>
-          <TabsTrigger className="data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background  basis-1/3" value="overview">
+          <TabsTrigger
+            className="basis-1/3 data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            value="overview"
+          >
             <ChartNoAxesCombined size={16} />
             Overview
           </TabsTrigger>
-          <TabsTrigger className="data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background  basis-1/3" value="settings">
+          <TabsTrigger
+            className="basis-1/3 data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            value="settings"
+          >
             <Settings size={16} />
             Settings
           </TabsTrigger>
         </TabsList>
         <TabsContent value="home">
-          {
-            curEntry
-            ? (<>
-              <div className="font-bold pb-2">You have written something</div>
-              <Button className="bg-accent rounded-md text-xs h-6">
+          {curEntry ? (
+            <>
+              <div className="pb-2 font-bold">You have written something</div>
+              <Button className="h-6 rounded-md bg-accent text-xs">
                 <PenTool size={16} />
                 Start editing
               </Button>
-            </>) :
-            (<>
-              <div className="font-bold pb-2">You haven't written anything yet</div>
-              <Button className="bg-accent rounded-md text-xs h-6">
+            </>
+          ) : (
+            <>
+              <div className="pb-2 font-bold">
+                You haven't written anything yet
+              </div>
+              <Button className="h-6 rounded-md bg-accent text-xs">
                 <PenTool size={16} />
                 Start writing
               </Button>
-            </>)
-          }
+            </>
+          )}
         </TabsContent>
-        <TabsContent value="overview">
-          overview page
-        </TabsContent>
-        <TabsContent value="settings">
-          settings page
-        </TabsContent>
+        <TabsContent value="overview">overview page</TabsContent>
+        <TabsContent value="settings">settings page</TabsContent>
       </Tabs>
     </div>
   );
