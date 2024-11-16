@@ -41,20 +41,31 @@ export const HomeTabContent = ({
     setWriterWindow(newWindow);
   };
   return (
-    <div className="flex flex-col gap-1 bg-red-300/0 px-4 py-2">
-      <div className="pb-2 font-bold">
-        {curEntry
-          ? "You have written something"
-          : "You haven't written anything yet"}
-      </div>
-      <Button
-        className="flex h-8 w-fit justify-start gap-1 rounded-sm bg-accent text-right text-sm opacity-100 hover:bg-secondary"
-        onClick={openWritingTab}
-      >
-        <PenTool size={16} className="mr-2" />
-        {curEntry ? "Start editing" : "Start writing"}
-      </Button>
+    <div className="flex flex-col gap-4 bg-red-300/0 px-4 py-2">
+      <section className="flex w-full flex-col gap-1">
+        <div className="pb-2 font-bold">
+          {curEntry
+            ? "You have written something"
+            : "You haven't written anything yet"}
+        </div>
+        <Button
+          className="flex h-8 w-fit justify-start gap-1 rounded-sm bg-accent text-right text-sm opacity-100 hover:bg-secondary"
+          onClick={openWritingTab}
+        >
+          <PenTool size={16} className="mr-2" />
+          {curEntry ? "Start editing" : "Start writing"}
+        </Button>
+      </section>
+
       <MoodHeatmap />
+      <div className="w-full rounded-md bg-secondary p-3">
+        <span className="text-sm font-semibold text-foreground">
+          “Love All, trust a few, do wrong to None”
+        </span>
+        <span className="text-md flex w-full justify-end text-accent">
+          ~ William Shakesphere
+        </span>
+      </div>
     </div>
   );
 };
