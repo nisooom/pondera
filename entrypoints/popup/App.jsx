@@ -141,7 +141,7 @@ export default function App() {
               <div className="pb-2 font-bold">
                 You haven't written anything yet
               </div>
-              <Button className="h-6 rounded-md bg-accent text-xs">
+              <Button className="h-6 rounded-md bg-accent text-xs hover:bg-accent">
                 <PenTool size={16} />
                 Start writing
               </Button>
