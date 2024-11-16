@@ -21,6 +21,7 @@ export const saveEntry = async (entry, date) => {
       mood,
     }
     await journalEntries.setValue(entries);
+    console.log('Sucessfully save entry:', entries[date])
     return entries[date];
   } catch (error) {
     console.error('Failed to save entry:', error)

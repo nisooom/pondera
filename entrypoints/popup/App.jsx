@@ -12,6 +12,8 @@ import {
 import { HomeTabContent } from "@/components/home-tab-content";
 import { OverviewTabContent } from "@/components/overview-tab-content";
 import { SettingTabContent } from "@/components/setting-tab-content";
+import { Button } from "@/components/ui/button";
+import { Logs } from "lucide-react";
 
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
@@ -86,6 +88,7 @@ export default function App() {
       <div className="flex justify-between">
         <PonderaIcon />
         <div className="flex items-center gap-1">
+          <Button variant="destructive" size="icon" onClick={logAllEntries}><Logs/></Button>
           <Tooltip>
             <TooltipTrigger>
               <div className="flex h-min rounded-sm bg-secondary p-1 text-sm font-bold text-primary">
