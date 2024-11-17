@@ -10,15 +10,13 @@ const journalEntries = storage.defineItem('local:journal_entries', {
 
 export const saveTodayEntry = async (entry) => {
   const date = new Date().toISOString().split('T')[0];
-  // TODO: Get tags and mood from ai
-  const tags = [];
+  // TODO: Get mood from ai
   const mood = "";
 
   try {
     const allEntries = await journalEntries.getValue();
     allEntries[date] = {
       entry,
-      tags,
       mood,
     }
     await journalEntries.setValue(allEntries);
