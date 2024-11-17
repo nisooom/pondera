@@ -46,15 +46,10 @@ export const getAiQuote = async () => {
       console.log(result);
       return result;
     } else {
-      return {
-        errorMessage:
-          "Sorry, I can't create a session right now. Please try again later.",
-      };
+      return false;
     }
   } catch (error) {
-    return {
-      errorMessage: error.message,
-    };
+    return false;
   }
 };
 
@@ -78,10 +73,7 @@ export const generateAiSummaryForDates = async (dates) => {
       // Check if we have any entries to summarize
       const entriesCount = Object.keys(relevantEntries).length;
       if (entriesCount === 0) {
-        return {
-          summary: "No entries found for the selected dates.",
-          calculatedResponseTime: 0,
-        };
+        return "No entries found for the specified dates";
       }
 
       // const entriesCount = 7;
@@ -120,17 +112,10 @@ export const generateAiSummaryForDates = async (dates) => {
       console.log("Prompted AI", response);
       return response;
     } else {
-      return {
-        errorMessage:
-          "Sorry, I can't create a session right now. Please try again later.",
-        calculatedResponseTime: 0,
-      };
+      return "Sorry, I can't create a session right now. Please try again later.";
     }
   } catch (error) {
     console.error("Error generating summary:", error);
-    return {
-      errorMessage: error.message || "Failed to generate summary",
-      calculatedResponseTime: 0,
-    };
+    return "Error generating summary";
   }
 };

@@ -17,6 +17,11 @@ export const OverviewTabContent = ({ aiCachedSummary }) => {
   useEffect(() => {
     setIsLoading(true);
     if (aiCachedSummary) {
+      if (aiCachedSummary.errorMessage) {
+        setErrorMessage(error);
+        setIsLoading(false);
+        return;
+      }
       setAiSummary(aiCachedSummary);
       setIsLoading(false);
     }

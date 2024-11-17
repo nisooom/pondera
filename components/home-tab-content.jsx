@@ -17,6 +17,9 @@ export const HomeTabContent = ({
 
   useEffect(() => {
     getAiQuote().then((quote) => {
+      if (!quote) {
+        return;
+      }
       setAiQuote(quote);
     });
     return () => {
