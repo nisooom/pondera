@@ -47,7 +47,7 @@ export const HomeTabContent = ({
       <section className="flex w-full flex-col gap-1">
         <div className="pb-2 font-bold">
           {curEntry
-            ? "You have written something"
+            ? "Edit today's Journal Entry"
             : "You haven't written anything yet"}
         </div>
         <Button
