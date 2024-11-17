@@ -42,7 +42,7 @@ export const HomeTabContent = ({
       <section className="flex w-full flex-col gap-1">
         <div className="pb-2 font-bold">
           {curEntry
-            ? "You have written something"
+            ? "Edit today's Journal Entry"
             : "You haven't written anything yet"}
         </div>
         <Button
@@ -54,7 +54,7 @@ export const HomeTabContent = ({
         </Button>
       </section>
 
-      <MoodHeatmap coloredHeatmap={coloredHeatmap} />
+      <MoodHeatmap coloredHeatmap={coloredHeatmap} allEntries={allEntries} />
       <div className="w-full rounded-md bg-secondary p-3">
         <span className="text-sm font-semibold text-foreground">
           “Love All, trust a few, do wrong to None”

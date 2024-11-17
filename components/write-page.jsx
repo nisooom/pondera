@@ -1,12 +1,13 @@
 "use client";
 import { PonderaIcon } from "./pondera-icon";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { getUserPreferences } from "@/utils/backend";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { getTodayEntry, saveTodayEntry } from "@/utils/backend";
 
 export default function WritePage() {
+  const [allSectionsMandatory, setAllSectionsMandatory] = useState(false);
   const [activeTab, setActiveTab] = useState("journal");
   const [formData, setFormData] = useState({
     journal: "",
@@ -19,7 +20,10 @@ export default function WritePage() {
       if (entry) {
         setFormData(entry.entry);
       }
-    })
+    });
+    getUserPreferences().then((preferences) => {
+      setAllSectionsMandatory(preferences.allSectionsMandatory ?? false);
+    });
   }, []);
 
   const isTabCompleted = (tab) => {
@@ -36,6 +40,13 @@ export default function WritePage() {
   };
 
   const handleNext = () => {
+    // Check if all sections are mandatory and current section is incomplete
+    if (allSectionsMandatory && !isTabCompleted(activeTab)) {
+      alert(`Please complete the ${activeTab} section before proceeding.`);
+      return;
+    }
+
+    // Proceed to next tab or save entry
     if (activeTab === "journal") setActiveTab("grateful");
     else if (activeTab === "grateful") setActiveTab("goals");
     else {
