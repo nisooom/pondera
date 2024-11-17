@@ -1,17 +1,48 @@
 
 import { storage } from 'wxt/storage';
-
+import { getAiMood } from './chrome-ai';
 
 // Define storage keys using defineItem for better management
 const journalEntries = storage.defineItem('local:journal_entries', {
   fallback: {},
 });
 
+const userPreferences = storage.defineItem('local:user_preferences', {
+  fallback: {},
+});
+
+// User Preferences
+// {
+//   theme: 'light',
+//   heatmapColor: 'red',
+//   allItemsRequired: false,
+// }
+
+export const saveUserPreferences = async ({key, value}) => {
+  try {
+    let pref = await getUserPreferences();
+    pref[key] = value;
+    await userPreferences.setValue(pref);
+    console.log('Sucessfully saved preferences:', preferences);
+  } catch (error) {
+    console.error('Failed to save preferences:', error);
+  }
+}
+
+export const getUserPreferences = async () => {
+  try {
+    return await userPreferences.getValue();
+  } catch (error) {
+    console.error('Failed to get preferences:', error);
+    return {};
+  }
+}
+
 
 export const saveTodayEntry = async (entry) => {
   const date = new Date().toISOString().split('T')[0];
   // TODO: Get mood from ai
-  const mood = "";
+  const mood = getAiMood(entry);
 
   try {
     const allEntries = await journalEntries.getValue();

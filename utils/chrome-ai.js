@@ -1,6 +1,6 @@
 import { getAllEntries } from "./backend";
 
-export const createTextSessionAndPrompt = async (text) => {
+export const getAiMood = async (text) => {
     console.log("Creating session and prompting AI");
     try {
         const { available } = await ai.languageModel.capabilities();

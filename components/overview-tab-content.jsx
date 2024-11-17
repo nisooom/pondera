@@ -1,11 +1,9 @@
 // TODO: Implement Redirection to date entries
 
-
-
 import React, { useState, useEffect } from "react";
 import DateCarousel from "@/components/date-carousel";
 import { format, subDays } from "date-fns";
-import { generateAiSummaryForDates } from "@/utils/chromeAI";
+import { generateAiSummaryForDates } from "@/utils/chrome-ai";
 import { Card } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 

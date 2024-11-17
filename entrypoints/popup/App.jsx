@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { getAllEntries, clearAllEntries } from "@/utils/backend";
+import { getAllEntries, clearAllEntries, getUserPreferences } from "@/utils/backend";
 import { PonderaIcon } from "@/components/pondera-icon";
 import { X, Flame, Home, ChartNoAxesCombined, Settings } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,6 +32,12 @@ export default function App() {
         setCurEntry(entry.entry);
       }
     });
+
+    getUserPreferences().then((preferences) => {
+      setColoredHeatmap(preferences.coloredHeatmap ?? true);
+      setAllSectionsMandatory(preferences.allSectionsMandatory ?? false);
+    });
+
   }, []);
 
   const clearJournalHandler = async () => {
