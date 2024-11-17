@@ -56,8 +56,8 @@ const getMoodColor = (mood, hasColoredTiles) => {
   return colors[mood] || "bg-gray-300";
 };
 
-const MoodHeatmap = () => {
-  const hasColoredTiles = true; // You can toggle this to false to test
+const MoodHeatmap = ({ coloredHeatmap }) => {
+  const hasColoredTiles = coloredHeatmap; // You can toggle this to false to test
   const [hoveredDay, setHoveredDay] = useState(null);
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

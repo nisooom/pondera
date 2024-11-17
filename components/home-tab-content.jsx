@@ -3,6 +3,7 @@ import { PenTool } from "lucide-react";
 import MoodHeatmap from "./heatmap";
 export const HomeTabContent = ({
   curEntry,
+  coloredHeatmap,
   setCurEntry,
   allEntries,
   setAllEntries,
@@ -57,7 +58,7 @@ export const HomeTabContent = ({
         </Button>
       </section>
 
-      <MoodHeatmap />
+      <MoodHeatmap coloredHeatmap={coloredHeatmap} />
       <div className="w-full rounded-md bg-secondary p-3">
         <span className="text-sm font-semibold text-foreground">
           “Love All, trust a few, do wrong to None”

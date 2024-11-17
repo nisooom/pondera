@@ -88,7 +88,9 @@ export default function App() {
       <div className="flex justify-between">
         <PonderaIcon />
         <div className="flex items-center gap-1">
-          <Button variant="destructive" size="icon" onClick={logAllEntries}><Logs/></Button>
+          <Button variant="destructive" size="icon" onClick={logAllEntries}>
+            <Logs />
+          </Button>
           <Tooltip>
             <TooltipTrigger>
               <div className="flex h-min rounded-sm bg-secondary p-1 text-sm font-bold text-primary">
@@ -129,6 +131,7 @@ export default function App() {
         </TabsList>
         <TabsContent value="home">
           <HomeTabContent
+            coloredHeatmap={coloredHeatmap}
             curEntry={curEntry}
             setCurEntry={setCurEntry}
             allEntries={allEntries}
