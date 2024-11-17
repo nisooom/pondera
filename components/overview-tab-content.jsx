@@ -57,10 +57,19 @@ export const OverviewTabContent = ({
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
-    const entry = allEntries.find(
-      (e) =>
-        format(new Date(e.date), "yyyy-MM-dd") === format(date, "yyyy-MM-dd"),
+
+    const formattedDate = format(date, "yyyy-MM-dd");
+    const writeURL = chrome.runtime.getURL(`popup.html#/read/${formattedDate}`);
+    const newWindow = window.open(
+      writeURL,
+      "JournalReader",
+      "width=600,height=800,left=50,top=50",
     );
+
+    if (!newWindow) {
+      alert("Please allow popups for this site to open the writing tab.");
+      return;
+    }
 
     if (entry) {
       setCurEntry(entry);

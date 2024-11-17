@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { PonderaIcon } from "./pondera-icon";
 import { Button } from "@/components/ui/button";
 import { X, Calendar } from "lucide-react";
+import { getEntryByDate } from "@/utils/backend";
+import { useEffect, useState } from "react";
 
 const ReadPage = () => {
   const { date } = useParams();
@@ -13,6 +15,14 @@ const ReadPage = () => {
     month: "long",
     day: "numeric",
   });
+
+  const [entry, setEntry] = useState(null);
+
+  useEffect(() => {
+    getEntryByDate(date).then((entry) => {
+      setEntry(entry);
+    });
+  }, [date]);
 
   const handleClose = () => window.close();
 
@@ -41,7 +51,7 @@ const ReadPage = () => {
               {formattedDate}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Your journal entry for today
+              {JSON.stringify(entry)}
             </p>
           </div>
         </div>

@@ -42,7 +42,7 @@ export const getUserPreferences = async () => {
 export const saveTodayEntry = async (entry) => {
   const date = new Date().toISOString().split('T')[0];
   // TODO: Get mood from ai
-  const mood = getAiMood(entry);
+  const mood = await getAiMood(entry);
 
   try {
     const allEntries = await journalEntries.getValue();
@@ -72,6 +72,16 @@ export const getTodayEntry = async () => {
   }
 }
 
+export const getEntryByDate = async (date) => {
+  try {
+    const allEntries = await journalEntries.getValue();
+    console.log('Sucessfully get entry:', allEntries[date] ?? null);
+    return allEntries[date] ?? null;
+  } catch (error) {
+    console.error('Failed to get entry:', error);
+    return null;
+  }
+}
 
 export const getAllEntries = async () => {
   try {
