@@ -16,7 +16,7 @@ export default function DateCarousel({ onSelectDate }) {
   const days = useMemo(() => {
     const today = new Date();
     const result = [];
-    const numberOfDays = showThirtyDays ? 30 : 7;
+    const numberOfDays = 7;
 
     result.push(today);
     for (let i = 1; i < numberOfDays; i++) {
@@ -35,7 +35,7 @@ export default function DateCarousel({ onSelectDate }) {
   };
 
   return (
-    <div className="w-full max-w-xl select-none bg-background p-2">
+    <div className="h-full max-w-xl select-none bg-background p-2">
       <Carousel className="w-full touch-pan-x">
         <CarouselContent className="-ml-1">
           {days.map((date, index) => (
@@ -67,7 +67,7 @@ export default function DateCarousel({ onSelectDate }) {
                     </div>
                     <div
                       className={cn(
-                        "mt-0.5 flex h-6 w-6 items-center justify-center rounded-full text-base font-semibold",
+                        "mt-0.5 flex h-6 w-4 items-center justify-center rounded-full text-base font-semibold",
                         isToday(date) && "bg-primary text-primary-foreground",
                         isSelected(date) &&
                           !isToday(date) &&
@@ -83,25 +83,6 @@ export default function DateCarousel({ onSelectDate }) {
           ))}
         </CarouselContent>
       </Carousel>
-
-      <div className="mt-2 flex justify-center gap-1.5">
-        <Button
-          variant={!showThirtyDays ? "secondary" : "outline"}
-          onClick={() => setShowThirtyDays(false)}
-          className="h-7 select-none rounded-full px-3 text-xs"
-          size="sm"
-        >
-          last 7 days
-        </Button>
-        <Button
-          variant={showThirtyDays ? "secondary" : "outline"}
-          onClick={() => setShowThirtyDays(true)}
-          className="h-7 select-none rounded-full px-3 text-xs"
-          size="sm"
-        >
-          last 30 days
-        </Button>
-      </div>
     </div>
   );
 }

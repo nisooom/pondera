@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./App.css";
-import { getAllEntries, clearAllEntries, getUserPreferences } from "@/utils/backend";
+import {
+  getAllEntries,
+  clearAllEntries,
+  getUserPreferences,
+} from "@/utils/backend";
 import { PonderaIcon } from "@/components/pondera-icon";
 import { X, Flame, Home, ChartNoAxesCombined, Settings } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,12 +18,25 @@ import { OverviewTabContent } from "@/components/overview-tab-content";
 import { SettingTabContent } from "@/components/setting-tab-content";
 import { Button } from "@/components/ui/button";
 import { Logs } from "lucide-react";
+import { generateAiSummaryForDates } from "@/utils/chrome-ai";
 
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
   const [allEntries, setAllEntries] = useState(null);
   const [coloredHeatmap, setColoredHeatmap] = useState(true);
   const [allSectionsMandatory, setAllSectionsMandatory] = useState(false);
+  const [aiCachedSummary, setAiCachedSummary] = useState(null);
+
+  const fetchWeeklySummary = async () => {
+    const dates = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      dates.push(date.toISOString().split("T")[0]);
+    }
+    const summary = await generateAiSummaryForDates(dates);
+    setAiCachedSummary(summary);
+  };
 
   // first load all entries
   // then try to load the current date's entry
@@ -38,6 +55,7 @@ export default function App() {
       setAllSectionsMandatory(preferences.allSectionsMandatory ?? false);
     });
 
+    fetchWeeklySummary();
   }, []);
 
   const clearJournalHandler = async () => {
@@ -106,12 +124,7 @@ export default function App() {
           />
         </TabsContent>
         <TabsContent value="overview">
-          <OverviewTabContent
-            curEntry={curEntry}
-            setCurEntry={setCurEntry}
-            allEntries={allEntries}
-            setAllEntries={setAllEntries}
-          />
+          <OverviewTabContent aiCachedSummary={aiCachedSummary} />
         </TabsContent>
         <TabsContent value="settings">
           <SettingTabContent

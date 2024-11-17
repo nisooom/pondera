@@ -19,13 +19,37 @@ export const getAiMood = async (text) => {
         } else {
             return {
                 errorMessage: "Sorry, I can't create a session right now. Please try again later.",
-                calculatedResponseTime: 0,
             };
         }
     } catch (error) {
         return {
             errorMessage: error.message,
-            calculatedResponseTime: 0,
+        };
+    }
+};
+
+export const getAiQuote = async () => {
+    console.log("Creating session and prompting AI");
+    try {
+        const { available } = await ai.languageModel.capabilities();
+        const session = await ai.languageModel.create();
+        
+        if (available !== "no") {
+            console.log("Session created");
+            console.log(session);
+            const result = await session.prompt(
+                "Generate a quote that is motivational and inspiring, under 50 charectors"
+            );
+            console.log(result);
+            return { result };
+        } else {
+            return {
+                errorMessage: "Sorry, I can't create a session right now. Please try again later.",
+            };
+        }
+    } catch (error) {
+        return {
+            errorMessage: error.message,
         };
     }
 };
@@ -48,15 +72,15 @@ export const generateAiSummaryForDates = async (dates) => {
             }, {});
 
             // Check if we have any entries to summarize
-            // const entriesCount = Object.keys(relevantEntries).length;
-            // if (entriesCount === 0) {
-            //     return {
-            //         summary: "No entries found for the selected dates.",
-            //         calculatedResponseTime: 0,
-            //     };
-            // }
+            const entriesCount = Object.keys(relevantEntries).length;
+            if (entriesCount === 0) {
+                return {
+                    summary: "No entries found for the selected dates.",
+                    calculatedResponseTime: 0,
+                };
+            }
 
-            const entriesCount = 7;
+            // const entriesCount = 7;
 
             // Create a session for AI processing
             const session = await ai.languageModel.create();
@@ -65,18 +89,18 @@ export const generateAiSummaryForDates = async (dates) => {
             console.log(session);
 
             // Format entries for the prompt
-            // const formattedEntries = Object.entries(relevantEntries)
-            //     .map(([date, data]) => `Date: ${date}\nEntry: ${data.entry}`)
-            //     .join('\n\n');
+            const formattedEntries = Object.entries(relevantEntries)
+                .map(([date, data]) => `Date: ${date}\nEntry: ${data.entry}`)
+                .join('\n\n');
             
-            const formattedEntries = 
-            `Today was a challenging day at work. I struggled with deadlines but managed to stay focused.
-             Feeling better today. Had a productive meeting and accomplished key tasks.
-             Spent time with family. It really helped improve my mood.
-             Dealing with some stress but practicing meditation helps.
-             Made significant progress on the project. Team dynamics are improving.
-             Taking time for self-care and reflection. Feeling more balanced.
-             End of week review. Overall positive despite some obstacles.`;
+            // const formattedEntries = 
+            // `Today was a challenging day at work. I struggled with deadlines but managed to stay focused.
+            //  Feeling better today. Had a productive meeting and accomplished key tasks.
+            //  Spent time with family. It really helped improve my mood.
+            //  Dealing with some stress but practicing meditation helps.
+            //  Made significant progress on the project. Team dynamics are improving.
+            //  Taking time for self-care and reflection. Feeling more balanced.
+            //  End of week review. Overall positive despite some obstacles.`;
 
 
             // Generate prompt based on number of entries

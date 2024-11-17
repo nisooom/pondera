@@ -23,7 +23,7 @@ export const saveUserPreferences = async ({key, value}) => {
     let pref = await getUserPreferences();
     pref[key] = value;
     await userPreferences.setValue(pref);
-    console.log('Sucessfully saved preferences:', preferences);
+    console.log('Sucessfully saved preferences:', userPreferences);
   } catch (error) {
     console.error('Failed to save preferences:', error);
   }
@@ -58,7 +58,6 @@ export const saveTodayEntry = async (entry) => {
     return null;
   }
 }
-
 
 export const getTodayEntry = async () => {
   const date = new Date().toISOString().split('T')[0];
