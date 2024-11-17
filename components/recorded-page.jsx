@@ -3,7 +3,7 @@
 import React from "react";
 import { PonderaIcon } from "./pondera-icon";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { CheckCircle, ArrowLeft, X } from "lucide-react";
 
 const RecordedPage = () => {
   const handleCloseTab = () => {
@@ -11,33 +11,84 @@ const RecordedPage = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-center p-8">
-      <div className="flex w-full max-w-3xl flex-col gap-4 rounded-lg bg-[#f8f5ff] p-6 shadow-lg">
+    <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
+      <div className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-[#f8f5ff] p-6 shadow-lg fade-in">
         <div className="flex items-center justify-between">
-          <div>
-            <PonderaIcon />
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-center space-y-4 py-12">
-          <h2 className="text-2xl font-semibold text-[#6750A4]">
-            Your journal has been recorded!
-          </h2>
-          <p className="text-center text-muted-foreground">
-            Thank you for taking the time to reflect. Your thoughts, gratitude,
-            and goals have been saved.
-          </p>
-          <p className="text-center text-muted-foreground">
-            You can safely close this tab now.
-          </p>
+          <PonderaIcon />
           <Button
-            className="mt-4 bg-[#6750A4] text-white hover:bg-[#6750A4]/90"
+            variant="ghost"
+            size="icon"
             onClick={handleCloseTab}
+            className="h-8 w-8 rounded-full hover:text-white"
           >
-            Close Tab
+            <X className="h-4 w-4" />
           </Button>
         </div>
+
+        <div className="flex flex-col items-center justify-center space-y-2 py-6">
+          <div className="scale-in">
+            <CheckCircle className="h-16 w-16 animate-bounce text-[#6750A4]" />
+          </div>
+
+          <div className="space-y-2 text-center">
+            <h2 className="animate-fade-in text-xl font-bold text-[#6750A4]">
+              Successfully Recorded!
+            </h2>
+            <p className="max-w-md text-base text-muted-foreground">
+              Your thoughts, gratitude, and goals have been saved for today.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center gap-2 pt-2">
+            <Button
+              size="lg"
+              className="transform bg-[#6750A4] text-white transition-all duration-200 hover:scale-105 hover:bg-[#6750A4]/90"
+              onClick={handleCloseTab}
+            >
+              Close Window
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-sm text-muted-foreground transition-colors hover:bg-gray-200 hover:text-foreground"
+              onClick={() => window.history.back()}
+            >
+              <ArrowLeft className="mr-1 h-4 w-4" />
+              Return to Journal
+            </Button>
+          </div>
+
+          <p className="text-xs text-muted-foreground/60">
+            See you tomorrow for your next reflection!
+          </p>
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .fade-in {
+          animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes scaleIn {
+          from {
+            transform: scale(0.9);
+          }
+          to {
+            transform: scale(1);
+          }
+        }
+        .scale-in {
+          animation: scaleIn 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
