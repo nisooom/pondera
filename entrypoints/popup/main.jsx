@@ -6,7 +6,7 @@ import App from "./App.jsx";
 import "./style.css";
 import WritePage from "@/components/write-page.jsx";
 import { TooltipProvider } from "@/components/ui/tooltip.jsx";
-
+import RecordedPage from "@/components/recorded-page.jsx";
 const router = createHashRouter([
   {
     path: "/",
@@ -15,6 +15,10 @@ const router = createHashRouter([
   {
     path: "/write",
     element: <WritePage />,
+  },
+  {
+    path: "/recorded",
+    element: <RecordedPage />,
   },
 ]);
 
