@@ -7,53 +7,20 @@ import { generateAiSummaryForDates } from "@/utils/chrome-ai";
 import { Card } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 
-export const OverviewTabContent = ({
-  curEntry,
-  setCurEntry,
-  allEntries,
-  setAllEntries,
-}) => {
+export const OverviewTabContent = ({ aiCachedSummary }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [aiSummary, setAiSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Generate dates for the last 7 days
-  const getLast7Days = () => {
-    const dates = [];
-    for (let i = 0; i < 7; i++) {
-      const date = format(subDays(new Date(), i), "yyyy-MM-dd");
-      dates.push(date);
-    }
-    return dates;
-  };
-
-  // Get summary for the last 7 days when component mounts
+  // change the aisummary once compenent mounts
   useEffect(() => {
-    const fetchWeeklySummary = async () => {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      try {
-        const dates = getLast7Days();
-        const summary = await generateAiSummaryForDates(dates);
-
-        if (summary.errorMessage) {
-          setErrorMessage(summary.errorMessage);
-          setAiSummary(null);
-        } else {
-          setAiSummary(summary);
-        }
-      } catch (error) {
-        setErrorMessage("Failed to generate weekly summary");
-        setAiSummary(null);
-      }
-
+    setIsLoading(true);
+    if (aiCachedSummary) {
+      setAiSummary(aiCachedSummary);
       setIsLoading(false);
-    };
-
-    fetchWeeklySummary();
-  }, []); // Empty dependency array means this runs once on mount
+    }
+  }, [aiCachedSummary]);
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
@@ -70,13 +37,6 @@ export const OverviewTabContent = ({
       alert("Please allow popups for this site to open the writing tab.");
       return;
     }
-
-    if (entry) {
-      setCurEntry(entry);
-    } else {
-      setCurEntry(null);
-      setErrorMessage("No entry found for the selected date.");
-    }
   };
 
   return (
@@ -84,9 +44,8 @@ export const OverviewTabContent = ({
       <DateCarousel onSelectDate={handleDateSelect} />
 
       {/* Weekly AI Summary Section */}
+      <h3 className="mb-2 text-lg font-semibold">Weekly Summary</h3>
       <Card className="p-4">
-        <h3 className="mb-2 text-lg font-semibold">Weekly Summary</h3>
-
         {isLoading && (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -102,7 +61,7 @@ export const OverviewTabContent = ({
             <p className="text-sm text-muted-foreground">
               Covering the last 7 days
             </p>
-            <p className="text-sm">{aiSummary.summary}</p>
+            <p className="text-sm">{aiSummary}</p>
           </div>
         )}
 

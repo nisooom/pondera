@@ -1,6 +1,8 @@
 import { Button } from "./ui/button";
 import { PenTool } from "lucide-react";
 import MoodHeatmap from "./heatmap";
+import { getAiQuote } from "@/utils/chrome-ai";
+
 export const HomeTabContent = ({
   curEntry,
   coloredHeatmap,
@@ -9,6 +11,9 @@ export const HomeTabContent = ({
   setAllEntries,
 }) => {
   const [writerWindow, setWriterWindow] = useState(null);
+  const [aiQuote, setAiQuote] = useState(
+    "“Love All, trust a few, do wrong to None”",
+  );
 
   useEffect(() => {
     return () => {
@@ -42,7 +47,7 @@ export const HomeTabContent = ({
       <section className="flex w-full flex-col gap-1">
         <div className="pb-2 font-bold">
           {curEntry
-            ? "You have written something"
+            ? "Edit today's Journal Entry"
             : "You haven't written anything yet"}
         </div>
         <Button
@@ -54,14 +59,9 @@ export const HomeTabContent = ({
         </Button>
       </section>
 
-      <MoodHeatmap coloredHeatmap={coloredHeatmap} />
+      <MoodHeatmap coloredHeatmap={coloredHeatmap} allEntries={allEntries} />
       <div className="w-full rounded-md bg-secondary p-3">
-        <span className="text-sm font-semibold text-foreground">
-          “Love All, trust a few, do wrong to None”
-        </span>
-        <span className="text-md flex w-full justify-end text-accent">
-          ~ William Shakesphere
-        </span>
+        <span className="text-sm font-semibold text-foreground">{aiQuote}</span>
       </div>
     </div>
   );
