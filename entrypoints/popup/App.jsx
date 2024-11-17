@@ -18,7 +18,7 @@ import { OverviewTabContent } from "@/components/overview-tab-content";
 import { SettingTabContent } from "@/components/setting-tab-content";
 import { Button } from "@/components/ui/button";
 import { Logs } from "lucide-react";
-import { subDays } from 'date-fns';
+import { subDays } from "date-fns";
 import { generateAiSummaryForDates } from "@/utils/chrome-ai";
 
 export default function App() {
@@ -38,7 +38,9 @@ export default function App() {
       dates.push(date.toISOString().split("T")[0]);
     }
     const summary = await generateAiSummaryForDates(dates);
+
     setAiCachedSummary(summary);
+    console.log("AI: ", aiCachedSummary);
   };
 
   // first load all entries
@@ -95,7 +97,7 @@ export default function App() {
       }
       setDidToday(true);
     }
-  }, [allEntries])
+  }, [allEntries]);
 
   const clearJournalHandler = async () => {
     await clearAllEntries();
@@ -112,18 +114,18 @@ export default function App() {
       <div className="flex justify-between">
         <PonderaIcon />
         <div className="flex items-center gap-1">
-          <Button variant="destructive" size="icon" onClick={logAllEntries}>
+          {/* <Button variant="destructive" size="icon" onClick={logAllEntries}>
             <Logs />
-          </Button>
+          </Button> */}
           <Tooltip>
             <TooltipTrigger>
               <div className="flex h-min rounded-sm bg-secondary p-1 text-sm font-bold text-primary">
                 {streak}
-                {
-                  didToday ?
-                    <Flame className="fill-orange-400" size={20} /> :
-                    <Flame className="fill-primary" size={20} />
-                }
+                {didToday ? (
+                  <Flame className="fill-primary" size={20} />
+                ) : (
+                  <Flame className="fill-secondary" size={20} />
+                )}
               </div>
             </TooltipTrigger>
             <TooltipContent>Continue your streak pls</TooltipContent>

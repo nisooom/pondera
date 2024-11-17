@@ -16,6 +16,9 @@ export const HomeTabContent = ({
   );
 
   useEffect(() => {
+    getAiQuote().then((quote) => {
+      setAiQuote(quote);
+    });
     return () => {
       if (writerWindow && !writerWindow.closed) {
         writerWindow.close();

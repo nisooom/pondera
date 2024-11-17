@@ -121,6 +121,7 @@ const MoodHeatmap = ({ coloredHeatmap, allEntries }) => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   useEffect(() => {
+    console.log(allEntries);
     const processedData = processEntries(allEntries || {});
     setMoodData(processedData);
 

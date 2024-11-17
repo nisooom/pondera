@@ -61,7 +61,8 @@ export const OverviewTabContent = ({ aiCachedSummary }) => {
             <p className="text-sm text-muted-foreground">
               Covering the last 7 days
             </p>
-            <p className="text-sm">{aiSummary}</p>
+            {JSON.stringify(aiSummary)}
+            {/* <p className="text-sm">{aiSummary}</p> */}
           </div>
         )}
 
