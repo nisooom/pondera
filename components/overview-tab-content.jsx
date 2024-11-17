@@ -14,14 +14,11 @@ export const OverviewTabContent = ({
   setCurEntry,
   allEntries,
   setAllEntries,
-  errorMessage,
-  setErrorMessage,
-  successMessage,
-  setSuccessMessage,
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [aiSummary, setAiSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Generate dates for the last 7 days
   const getLast7Days = () => {

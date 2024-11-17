@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { getTodayEntry, saveTodayEntry } from "@/utils/backend";
 
 export default function WritePage() {
   const [activeTab, setActiveTab] = useState("journal");
@@ -12,6 +13,15 @@ export default function WritePage() {
     grateful: ["", "", ""],
     goals: "",
   });
+
+  useEffect(() => {
+    getTodayEntry().then((entry) => {
+      if (entry) {
+        setFormData(entry.entry);
+      }
+    })
+  }, []);
+
   const isTabCompleted = (tab) => {
     switch (tab) {
       case "journal":
@@ -24,12 +34,13 @@ export default function WritePage() {
         return false;
     }
   };
+
   const handleNext = () => {
     if (activeTab === "journal") setActiveTab("grateful");
     else if (activeTab === "grateful") setActiveTab("goals");
     else {
       // Handle save/completion
-      console.log("Saved:", formData);
+      saveTodayEntry(formData);
       const recordedURL = chrome.runtime.getURL("popup.html#/recorded");
       window.location.href = recordedURL;
     }

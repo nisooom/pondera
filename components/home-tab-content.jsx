@@ -7,10 +7,6 @@ export const HomeTabContent = ({
   setCurEntry,
   allEntries,
   setAllEntries,
-  errorMessage,
-  setErrorMessage,
-  successMessage,
-  setSuccessMessage,
 }) => {
   const [writerWindow, setWriterWindow] = useState(null);
 

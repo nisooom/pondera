@@ -8,23 +8,37 @@ const journalEntries = storage.defineItem('local:journal_entries', {
 });
 
 
-export const saveEntry = async (entry, date) => {
+export const saveTodayEntry = async (entry) => {
+  const date = new Date().toISOString().split('T')[0];
   // TODO: Get tags and mood from ai
   const tags = [];
   const mood = "";
 
   try {
-    const entries = await journalEntries.getValue();
-    entries[date] = {
+    const allEntries = await journalEntries.getValue();
+    allEntries[date] = {
       entry,
       tags,
       mood,
     }
-    await journalEntries.setValue(entries);
-    console.log('Sucessfully save entry:', entries[date])
-    return entries[date];
+    await journalEntries.setValue(allEntries);
+    console.log('Sucessfully saved entry:', allEntries[date]);
+    return allEntries[date];
   } catch (error) {
-    console.error('Failed to save entry:', error)
+    console.error('Failed to save entry:', error);
+    return null;
+  }
+}
+
+
+export const getTodayEntry = async () => {
+  const date = new Date().toISOString().split('T')[0];
+  try {
+    const allEntries = await journalEntries.getValue();
+    console.log('Sucessfully get entry:', allEntries[date] ?? null);
+    return allEntries[date] ?? null;
+  } catch (error) {
+    console.error('Failed to get entry:', error);
     return null;
   }
 }
@@ -43,6 +57,7 @@ export const getAllEntries = async () => {
 export const clearAllEntries = async () => {
   try {
     await journalEntries.setValue({});
+    console.log("Cleared all the entries");
   } catch (error) {
     console.error('Failed to clear entries:', error);
   }

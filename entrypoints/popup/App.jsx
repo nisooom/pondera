@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { saveEntry, getAllEntries, clearAllEntries } from "@/utils/backend";
+import { getAllEntries, clearAllEntries } from "@/utils/backend";
 import { PonderaIcon } from "@/components/pondera-icon";
 import { X, Flame, Home, ChartNoAxesCombined, Settings } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -21,9 +21,6 @@ export default function App() {
   const [coloredHeatmap, setColoredHeatmap] = useState(true);
   const [allSectionsMandatory, setAllSectionsMandatory] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-
   // first load all entries
   // then try to load the current date's entry
   useEffect(() => {
@@ -37,50 +34,14 @@ export default function App() {
     });
   }, []);
 
-  const saveEntryHandler = async () => {
-    if (!curEntry.trim()) {
-      setSuccessMessage("");
-      setErrorMessage("have something plz");
-      return;
-    }
-
-    const date = new Date().toISOString().split("T")[0];
-    const saved = await saveEntry(curEntry, date);
-    if (saved !== null) {
-      // optimistic updates
-      setAllEntries((prev) => ({
-        ...prev,
-        [date]: saved,
-      }));
-
-      // NOTE: it doesnt make sense to clear the input box after saving
-      // since they might edit it again
-      // setCurEntry("");
-      setSuccessMessage("Entry saved successfully");
-      setErrorMessage("");
-    } else {
-      setSuccessMessage("");
-      setErrorMessage("Failed to save entry");
-    }
-  };
-
   const clearJournalHandler = async () => {
-    try {
-      await clearAllEntries();
-      setCurEntry("");
-      setAllEntries({});
-      setSuccessMessage("Journal cleared successfully!");
-      setErrorMessage("");
-    } catch (error) {
-      setSuccessMessage("");
-      setErrorMessage("Failed to clear journal.");
-    }
+    await clearAllEntries();
+    setCurEntry("");
+    setAllEntries({});
   };
 
   const logAllEntries = () => {
     console.log(allEntries);
-    setSuccessMessage("");
-    setErrorMessage("");
   };
 
   return (
@@ -136,10 +97,6 @@ export default function App() {
             setCurEntry={setCurEntry}
             allEntries={allEntries}
             setAllEntries={setAllEntries}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-            successMessage={successMessage}
-            setSuccessMessage={setSuccessMessage}
           />
         </TabsContent>
         <TabsContent value="overview">
@@ -148,10 +105,6 @@ export default function App() {
             setCurEntry={setCurEntry}
             allEntries={allEntries}
             setAllEntries={setAllEntries}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-            successMessage={successMessage}
-            setSuccessMessage={setSuccessMessage}
           />
         </TabsContent>
         <TabsContent value="settings">
