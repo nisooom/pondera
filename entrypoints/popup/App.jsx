@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { getAllEntries, clearAllEntries, getUserPreferences } from "@/utils/backend";
+import { getAllEntries, clearAllEntries, getUserPreferences, journalEntries } from "@/utils/backend";
 import { PonderaIcon } from "@/components/pondera-icon";
 import { X, Flame, Home, ChartNoAxesCombined, Settings } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,31 +14,69 @@ import { OverviewTabContent } from "@/components/overview-tab-content";
 import { SettingTabContent } from "@/components/setting-tab-content";
 import { Button } from "@/components/ui/button";
 import { Logs } from "lucide-react";
+import { subDays } from 'date-fns';
 
 export default function App() {
   const [curEntry, setCurEntry] = useState("");
   const [allEntries, setAllEntries] = useState(null);
   const [coloredHeatmap, setColoredHeatmap] = useState(true);
   const [allSectionsMandatory, setAllSectionsMandatory] = useState(false);
+  const [streak, setStreak] = useState(0);
+  const [didToday, setDidToday] = useState(false);
 
   // first load all entries
   // then try to load the current date's entry
-  useEffect(() => {
+  const init = () => {
     getAllEntries().then((entries) => {
       setAllEntries(entries);
       const date = new Date().toISOString().split("T")[0];
       const entry = entries[date];
+
+      let streakCounter = 0;
       if (entry) {
         setCurEntry(entry.entry);
+        setDidToday(true);
+        streakCounter += 1;
+      } else {
+        setDidToday(false);
       }
-    });
 
+      let curDate = new Date();
+      while (true) {
+        curDate = subDays(curDate, 1);
+        if (entries[curDate.toISOString().split("T")[0]]) {
+          streakCounter += 1;
+        } else {
+          break;
+        }
+      }
+
+      setStreak(streakCounter);
+    });
+  };
+
+  journalEntries.watch(init);
+
+  useEffect(() => {
+    init();
     getUserPreferences().then((preferences) => {
       setColoredHeatmap(preferences.coloredHeatmap ?? true);
       setAllSectionsMandatory(preferences.allSectionsMandatory ?? false);
     });
-
   }, []);
+
+  useEffect(() => {
+    if (!allEntries) {
+      return;
+    }
+    const dateStr = new Date().toISOString().split("T")[0];
+    if (allEntries[dateStr]) {
+      if (!didToday) {
+        setStreak(streak + 1);
+      }
+      setDidToday(true);
+    }
+  }, [allEntries])
 
   const clearJournalHandler = async () => {
     await clearAllEntries();
@@ -61,8 +99,12 @@ export default function App() {
           <Tooltip>
             <TooltipTrigger>
               <div className="flex h-min rounded-sm bg-secondary p-1 text-sm font-bold text-primary">
-                23
-                <Flame className="fill-primary" size={20} />
+                {streak}
+                {
+                  didToday ?
+                    <Flame className="fill-orange-400" size={20} /> :
+                    <Flame className="fill-primary" size={20} />
+                }
               </div>
             </TooltipTrigger>
             <TooltipContent>Continue your streak pls</TooltipContent>

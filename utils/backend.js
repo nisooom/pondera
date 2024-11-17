@@ -3,7 +3,7 @@ import { storage } from 'wxt/storage';
 import { getAiMood } from './chrome-ai';
 
 // Define storage keys using defineItem for better management
-const journalEntries = storage.defineItem('local:journal_entries', {
+export const journalEntries = storage.defineItem('local:journal_entries', {
   fallback: {},
 });
 
