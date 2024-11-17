@@ -10,7 +10,16 @@ import {
 
 // Mock data generation
 const generateMockData = () => {
-  const moods = ["Happy", "Sad", "Angry", "Excited", "Calm", "null"];
+  const moods = [
+    "happy",
+    "sad",
+    "angry",
+    "anxious",
+    "neutral",
+    "null",
+    "frustrated",
+    "peaceful",
+  ];
   const data = [];
   const now = new Date();
   for (let i = 29; i >= 0; i--) {
@@ -26,24 +35,35 @@ const generateMockData = () => {
 
 const moodData = generateMockData();
 
-const getMoodColor = (mood) => {
+const getMoodColor = (mood, hasColoredTiles) => {
+  if (!hasColoredTiles) {
+    return mood && mood !== "null"
+      ? "bg-accent text-white"
+      : "bg-none border border-secondary";
+  }
+
   const colors = {
-    Happy: "bg-yellow-300",
-    Sad: "bg-blue-300",
-    Angry: "bg-red-400",
-    Excited: "bg-green-300",
-    Calm: "bg-teal-300",
+    happy: "bg-amber-500 text-white",
+    sad: "bg-blue-600 text-white",
+    angry: "bg-red-500 text-white",
+    anxious: "bg-stone-400 text-white",
+    neutral: "bg-emerald-400 text-white",
+    peaceful: "bg-lime-500 text-white",
+    frustrated: "bg-orange-600 text-white",
     null: "bg-none border border-secondary",
   };
+
   return colors[mood] || "bg-gray-300";
 };
 
 const MoodHeatmap = () => {
+  const hasColoredTiles = true; // You can toggle this to false to test
   const [hoveredDay, setHoveredDay] = useState(null);
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const weeks = [];
-  for (let i = 0; i < 5; i++) {
+
+  for (let i = 0; i < Math.ceil(moodData.length / 7); i++) {
     weeks.push(moodData.slice(i * 7, (i + 1) * 7));
   }
 
@@ -51,7 +71,6 @@ const MoodHeatmap = () => {
     <div className="max-w-full overflow-x-auto p-0">
       <div className="flex flex-col">
         <div className="mb-2 flex">
-          {/* <div className="w-8"></div> */}
           {daysOfWeek.map((day, index) => (
             <div key={index} className="w-9 text-center text-xs text-gray-500">
               {day}
@@ -60,9 +79,6 @@ const MoodHeatmap = () => {
         </div>
         {weeks.map((week, weekIndex) => (
           <div key={weekIndex} className="flex">
-            {/* <div className="flex w-8 items-center justify-end pr-2 text-right text-xs text-gray-500">
-              {weekIndex * 7 + 1}
-            </div> */}
             {week.map((day, dayIndex) => {
               const date = new Date(day.date);
               const dayNumber = weekIndex * 7 + dayIndex;
@@ -71,13 +87,23 @@ const MoodHeatmap = () => {
                   <Tooltip>
                     <TooltipTrigger>
                       <div
-                        className={`m-0.5 h-8 w-8 rounded-sm ${getMoodColor(day.mood)} flex cursor-pointer items-center justify-center text-xs font-bold transition-all duration-200 ${hoveredDay === dayNumber ? "ring-2 ring-black ring-offset-1" : ""}`}
+                        className={`m-0.5 h-8 w-8 rounded-sm p-2 ${getMoodColor(day.mood, hasColoredTiles)} flex cursor-pointer items-center justify-center text-xs font-bold transition-all duration-200 ${hoveredDay === dayNumber ? "ring-2 ring-accent ring-offset-1" : ""}`}
                         onMouseEnter={() => setHoveredDay(dayNumber)}
                         onMouseLeave={() => setHoveredDay(null)}
                       >
-                        {hoveredDay === dayNumber
-                          ? day.mood[0]
-                          : date.getDate()}
+                        {hoveredDay === dayNumber ? (
+                          day.mood && day.mood !== "null" ? (
+                            <img
+                              src={`/emoticons/${day.mood}.svg`}
+                              alt="emoji"
+                              className="h-6 w-6"
+                            />
+                          ) : (
+                            date.getDate()
+                          )
+                        ) : (
+                          date.getDate()
+                        )}
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
