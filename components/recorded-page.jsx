@@ -4,15 +4,26 @@ import React from "react";
 import { PonderaIcon } from "./pondera-icon";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowLeft, X } from "lucide-react";
-
+import { useState, useEffect } from "react";
+import { getUserPreferences } from "@/utils/backend";
 const RecordedPage = () => {
+  const [theme, setTheme] = useState("default");
+  useEffect(() => {
+    getUserPreferences().then((preferences) => {
+      setTheme(preferences.theme ?? "default");
+    });
+  }, []);
+  useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+  }, [theme]);
+
   const handleCloseTab = () => {
     window.close();
   };
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
-      <div className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-[#f8f5ff] p-6 shadow-lg fade-in">
+      <div className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-background p-6 shadow-lg fade-in">
         <div className="flex items-center justify-between">
           <PonderaIcon />
           <Button
@@ -27,11 +38,11 @@ const RecordedPage = () => {
 
         <div className="flex flex-col items-center justify-center space-y-2 py-6">
           <div className="scale-in">
-            <CheckCircle className="h-16 w-16 animate-bounce text-[#6750A4]" />
+            <CheckCircle className="text-accent] h-16 w-16 animate-bounce" />
           </div>
 
           <div className="space-y-2 text-center">
-            <h2 className="animate-fade-in text-xl font-bold text-[#6750A4]">
+            <h2 className="animate-fade-in text-xl font-bold text-accent">
               Successfully Recorded!
             </h2>
             <p className="max-w-md text-base text-muted-foreground">
@@ -42,7 +53,7 @@ const RecordedPage = () => {
           <div className="flex flex-col items-center gap-2 pt-2">
             <Button
               size="lg"
-              className="transform bg-[#6750A4] text-white transition-all duration-200 hover:scale-105 hover:bg-[#6750A4]/90"
+              className="transform bg-primary text-white transition-all duration-200 hover:scale-105 hover:bg-accent/90"
               onClick={handleCloseTab}
             >
               Close Window

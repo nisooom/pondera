@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 272.73, 14.67%, 85.29%;
+    --background: 270 12% 93%;
     --foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -14,19 +14,39 @@
     --input: 214.3 31.8% 91.4%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 47.4% 11.2%;
-    --primary: 250.34, 18.95%, 30%;
+    --primary: 250.34 18.95% 30%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 250.48, 48.84%, 74.71%;
+    --secondary: 250.48 48.84% 74.71%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-    --accent: 250, 36.29%, 51.37%;
+    --accent: 250 36.29% 51.37%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 100% 50%;
     --destructive-foreground: 210 40% 98%;
     --ring: 215 20.2% 65.1%;
     --radius: 0.5rem;
   }
-
-  .dark {
+  body[data-theme="pink"] {
+    --background: 270 20% 98%;
+    --foreground: 240 8% 28%;
+    --primary: 321 35% 59%;
+    --accent: 321 35% 59%;
+    --secondary: 298 27% 77%;
+  }
+  body[data-theme="cyan"] {
+    --background: 180 50% 98%;
+    --foreground: 180 33% 6%;
+    --primary: 181 44% 54%;
+    --accent: 181 44% 54%;
+    --secondary: 181 49% 72%;
+  }
+  body[data-theme="blue"] {
+    --background: 200 50% 98%;
+    --foreground: 200 27% 32%;
+    --primary: 199 61% 50%;
+    --accent: 199 61% 50%;
+    --secondary: 199 67% 72%;
+  }
+  /* .dark {
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;
     --muted: 223 47% 11%;
@@ -46,7 +66,7 @@
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
     --ring: 216 34% 17%;
-  }
+  } */
 }
 
 @layer base {

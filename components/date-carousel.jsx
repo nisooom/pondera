@@ -35,7 +35,7 @@ export default function DateCarousel({ onSelectDate }) {
   };
 
   return (
-    <div className="h-full max-w-xl select-none bg-background p-2">
+    <div className="h-full max-w-80 select-none bg-background p-2">
       <Carousel className="w-full touch-pan-x">
         <CarouselContent className="-ml-1">
           {days.map((date, index) => (
@@ -67,11 +67,12 @@ export default function DateCarousel({ onSelectDate }) {
                     </div>
                     <div
                       className={cn(
-                        "mt-0.5 flex h-6 w-4 items-center justify-center rounded-full text-base font-semibold",
-                        isToday(date) && "bg-primary text-primary-foreground",
+                        "mt-0.5 flex h-6 w-4 items-center justify-center rounded-full p-4 text-base font-semibold",
+                        isToday(date) &&
+                          "bg-primary p-4 text-primary-foreground",
                         isSelected(date) &&
                           !isToday(date) &&
-                          "bg-secondary-foreground text-secondary",
+                          "bg-secondary-foreground p-4 text-secondary",
                       )}
                     >
                       {format(date, "d")}

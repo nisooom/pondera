@@ -29,6 +29,7 @@ export default function App() {
   const [streak, setStreak] = useState(0);
   const [didToday, setDidToday] = useState(false);
   const [aiCachedSummary, setAiCachedSummary] = useState(null);
+  const [theme, setTheme] = useState("default");
 
   const fetchWeeklySummary = async () => {
     const dates = [];
@@ -79,12 +80,17 @@ export default function App() {
   useEffect(() => {
     init();
     getUserPreferences().then((preferences) => {
+      setTheme(preferences.theme ?? "default");
       setColoredHeatmap(preferences.coloredHeatmap ?? true);
       setAllSectionsMandatory(preferences.allSectionsMandatory ?? false);
     });
 
     fetchWeeklySummary();
   }, []);
+
+  useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     if (!allEntries) {
@@ -119,10 +125,10 @@ export default function App() {
           </Button> */}
           <Tooltip>
             <TooltipTrigger>
-              <div className="flex h-min rounded-sm bg-secondary p-1 text-sm font-bold text-primary">
+              <div className="flex h-min rounded-sm bg-secondary p-1 text-sm font-bold text-foreground">
                 {streak}
                 {didToday ? (
-                  <Flame className="fill-primary" size={20} />
+                  <Flame className="fill-foreground" size={20} />
                 ) : (
                   <Flame className="fill-secondary" size={20} />
                 )}
@@ -138,21 +144,21 @@ export default function App() {
       <Tabs defaultValue="home" className="pb-4 pt-3">
         <TabsList className="h-8 w-full rounded-3xl bg-secondary">
           <TabsTrigger
-            className="flex basis-1/3 gap-2 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            className="flex basis-1/3 gap-2 font-bold text-foreground data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-foreground data-[state=active]:text-background"
             value="home"
           >
             <Home size={16} />
             Home
           </TabsTrigger>
           <TabsTrigger
-            className="flex basis-1/3 gap-2 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            className="flex basis-1/3 gap-2 font-bold text-foreground data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-foreground data-[state=active]:text-background"
             value="overview"
           >
             <ChartNoAxesCombined size={16} />
             Overview
           </TabsTrigger>
           <TabsTrigger
-            className="flex basis-1/3 gap-2 font-bold text-primary data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-primary data-[state=active]:text-background"
+            className="flex basis-1/3 gap-2 font-bold text-foreground data-[state=active]:h-6 data-[state=active]:rounded-3xl data-[state=active]:bg-foreground data-[state=active]:text-background"
             value="settings"
           >
             <Settings size={16} />
@@ -173,6 +179,8 @@ export default function App() {
         </TabsContent>
         <TabsContent value="settings">
           <SettingTabContent
+            activeTheme={theme}
+            setActiveTheme={setTheme}
             coloredHeatmap={coloredHeatmap}
             setColoredHeatmap={setColoredHeatmap}
             allSectionsMandatory={allSectionsMandatory}

@@ -9,6 +9,7 @@ import { getTodayEntry, saveTodayEntry } from "@/utils/backend";
 export default function WritePage() {
   const [allSectionsMandatory, setAllSectionsMandatory] = useState(false);
   const [activeTab, setActiveTab] = useState("journal");
+  const [theme, setTheme] = useState("default");
   const [formData, setFormData] = useState({
     journal: "",
     grateful: ["", "", ""],
@@ -23,8 +24,13 @@ export default function WritePage() {
     });
     getUserPreferences().then((preferences) => {
       setAllSectionsMandatory(preferences.allSectionsMandatory ?? false);
+      setTheme(preferences.theme ?? "default");
     });
   }, []);
+
+  useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+  }, [theme]);
 
   const isTabCompleted = (tab) => {
     switch (tab) {
@@ -81,14 +87,14 @@ export default function WritePage() {
             <button
               key={tab}
               className={`flex items-center gap-1 ${
-                activeTab === tab ? "text-[#6750A4]" : "text-muted-foreground"
+                activeTab === tab ? "text-accent" : "text-muted-foreground"
               }`}
               onClick={() => setActiveTab(tab)}
             >
               <div
                 className={`h-2 w-2 rounded-full transition-colors ${
                   activeTab === tab
-                    ? "bg-[#6750A4]"
+                    ? "bg-accent"
                     : isTabCompleted(tab)
                       ? "bg-secondary"
                       : "bg-muted"
@@ -118,7 +124,7 @@ export default function WritePage() {
               </h2>
               {formData.grateful.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-[#6750A4]" />
+                  <div className="h-2 w-2 rounded-full bg-accent" />
                   <input
                     type="text"
                     className="flex-1 border-none bg-transparent text-sm focus:outline-none"
