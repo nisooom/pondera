@@ -63,12 +63,14 @@ export const generateAiSummaryForDates = async (dates) => {
       const allEntries = await getAllEntries();
 
       // Filter entries for the specified dates
-      const relevantEntries = dates.reduce((acc, date) => {
-        if (allEntries[date]) {
-          acc[date] = allEntries[date];
-        }
-        return acc;
-      }, {});
+      // const relevantEntries = dates.reduce((acc, date) => {
+      //   if (allEntries[date]) {
+      //     acc[date] = allEntries[date];
+      //   }
+      //   return acc;
+      // }, {});
+      const relevantEntries = allEntries;
+      console.log("Relevant entries", relevantEntries);
 
       // Check if we have any entries to summarize
       const entriesCount = Object.keys(relevantEntries).length;

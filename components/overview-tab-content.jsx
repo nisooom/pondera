@@ -22,7 +22,10 @@ export const OverviewTabContent = ({ aiCachedSummary }) => {
         setIsLoading(false);
         return;
       }
-      setAiSummary(aiCachedSummary);
+      setAiSummary(
+        // remove /n all new lines  and all quotes and trim the string
+        aiCachedSummary.replace(/(\r\n|\n|\r)/gm, "").replace(/"/g, ""),
+      );
       setIsLoading(false);
     }
   }, [aiCachedSummary]);
@@ -66,7 +69,7 @@ export const OverviewTabContent = ({ aiCachedSummary }) => {
             <p className="text-sm text-muted-foreground">
               Covering the last 7 days
             </p>
-            {JSON.stringify(aiSummary)}
+            <p className="text-sm">{aiSummary}</p>
             {/* <p className="text-sm">{aiSummary}</p> */}
           </div>
         )}
