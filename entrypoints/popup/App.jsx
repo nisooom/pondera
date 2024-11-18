@@ -37,9 +37,10 @@ export default function App() {
       const date = new Date();
       date.setDate(date.getDate() - i);
       dates.push(date.toLocaleDateString().split("T")[0]);
+      console.log(dates);
     }
     const summary = await generateAiSummaryForDates(dates);
-
+    console.log("Summary: ", summary);
     setAiCachedSummary(summary);
     console.log("AI: ", aiCachedSummary);
   };

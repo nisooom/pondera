@@ -8,44 +8,40 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-// Helper function to format date as YYYY-MM-DD
 const formatDate = (date) => {
-  return date.toLocaleDateString().split("T")[0];
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 };
 
-// Helper function to get start of day in user's local timezone
 const getStartOfDay = (date) => {
   const newDate = new Date(date);
   newDate.setHours(0, 0, 0, 0);
   return newDate;
 };
 
-// Get start of month
 const getStartOfMonth = (date) => {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 };
 
-// Get end of month
 const getEndOfMonth = (date) => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 };
 
-// Process entries for full current month
 const processEntries = (allEntries) => {
   const data = [];
   const now = getStartOfDay(new Date());
 
-  // Get start and end of current month
   const startDate = getStartOfMonth(now);
   const endDate = getEndOfMonth(now);
 
-  // Generate entries for the full month
   for (
     let date = new Date(startDate);
     date <= endDate;
     date.setDate(date.getDate() + 1)
   ) {
-    const dateString = formatDate(date);
+    const dateString = formatDate(new Date(date));
     const entry = allEntries[dateString];
 
     let mood = "null";
@@ -57,8 +53,8 @@ const processEntries = (allEntries) => {
       }
     }
 
-    const currentDate = new Date(dateString);
-    // Check if date is in current week
+    const currentDate = new Date(date);
+
     const startOfWeek = new Date(now);
     startOfWeek.setDate(now.getDate() - now.getDay());
     const endOfWeek = new Date(startOfWeek);
@@ -102,7 +98,6 @@ const getMoodColor = (mood, hasColoredTiles, isCurrentWeek, isToday) => {
     baseColor = colors[mood] || "bg-none border border-secondary";
   }
 
-  // Add visual indicators for current week and today
   if (isToday) {
     return `${baseColor} ring-2 ring-primary`;
   } else if (isCurrentWeek) {
@@ -121,48 +116,28 @@ const MoodHeatmap = ({ coloredHeatmap, allEntries }) => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   useEffect(() => {
-    console.log(allEntries);
     const processedData = processEntries(allEntries || {});
     setMoodData(processedData);
 
-    // Set current month name
     const now = new Date();
     setCurrentMonth(
       now.toLocaleString("default", { month: "long", year: "numeric" }),
     );
-
-    // Adjust 'isToday' calculation based on user's local time zone
-    const userTimezoneOffset = now.getTimezoneOffset();
-
-    // Update mood data with correct 'isToday' values
-    setMoodData((prevData) =>
-      prevData.map((day) => ({
-        ...day,
-        isToday:
-          formatDate(
-            new Date(new Date(day.date).getTime() - userTimezoneOffset * 60000),
-          ) === formatDate(now),
-      })),
-    );
   }, [allEntries]);
 
-  // Calculate weeks with proper date alignment
   const calculateWeeks = () => {
     const weeks = [];
     let currentWeek = [];
 
-    // Get the first date's day of week (0-6)
     if (moodData.length > 0) {
       const firstDate = new Date(moodData[0].date);
       const firstDayOfWeek = firstDate.getDay();
 
-      // Add padding for days before the first date
       for (let i = 0; i < firstDayOfWeek; i++) {
         currentWeek.push(null);
       }
     }
 
-    // Add all the mood data
     moodData.forEach((day) => {
       currentWeek.push(day);
       if (currentWeek.length === 7) {
@@ -170,8 +145,6 @@ const MoodHeatmap = ({ coloredHeatmap, allEntries }) => {
         currentWeek = [];
       }
     });
-
-    // Add remaining days to last week if needed
     if (currentWeek.length > 0) {
       while (currentWeek.length < 7) {
         currentWeek.push(null);
@@ -187,7 +160,6 @@ const MoodHeatmap = ({ coloredHeatmap, allEntries }) => {
   return (
     <div className="max-w-full overflow-x-auto p-0">
       <div className="flex flex-col">
-        {/* <div className="mb-4 text-center font-semibold">{currentMonth}</div> */}
         <div className="mb-2 flex">
           {daysOfWeek.map((day, index) => (
             <div key={index} className="w-9 text-center text-xs text-gray-500">
@@ -247,7 +219,7 @@ const MoodHeatmap = ({ coloredHeatmap, allEntries }) => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>
-                        {`${day.mood}${day.isToday ? " (Today)" : ""} - ${date.toLocaleDateString()}`}
+                        {`${day.mood}${day.isToday ? " (Today)" : ""} - ${formatDate(date)}`}
                       </p>
                     </TooltipContent>
                   </Tooltip>
