@@ -68,7 +68,7 @@ const ReadPage = () => {
                     <div className="text-xl font-semibold">My journal</div>
                     <div className="text-lg">
                       <Textarea
-                        className="min-h-[150px]"
+                        className="min-h-[150px] resize-none"
                         readOnly={true}
                         value={entry.entry.journal}
                       />
@@ -96,7 +96,7 @@ const ReadPage = () => {
                     <div className="text-xl font-semibold">My goals</div>
                     <div className="text-lg">
                       <Textarea
-                        className="min-h-[150px]"
+                        className="min-h-[150px] resize-none"
                         readOnly={true}
                         value={entry.entry.goals}
                       />
