@@ -10,7 +10,7 @@ import {
 
 // Helper function to format date as YYYY-MM-DD
 const formatDate = (date) => {
-  return date.toISOString().split("T")[0];
+  return date.toLocaleDateString().split("T")[0];
 };
 
 // Helper function to get start of day in user's local timezone

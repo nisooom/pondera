@@ -60,7 +60,7 @@ export const saveTodayEntry = async (entry) => {
 }
 
 export const getTodayEntry = async () => {
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toLocaleDateString().split('T')[0];
   try {
     const allEntries = await journalEntries.getValue();
     console.log('Sucessfully get entry:', allEntries[date] ?? null);

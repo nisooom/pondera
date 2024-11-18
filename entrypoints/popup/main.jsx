@@ -10,7 +10,7 @@ import RecordedPage from "@/components/recorded-page.jsx";
 
 const ReadPageWrapper = () => {
   const defaultProps = {
-    date: new Date().toISOString().split("T")[0],
+    date: new Date().toLocaleDateString().split("T")[0],
   };
   return <ReadPage {...defaultProps} />;
 };

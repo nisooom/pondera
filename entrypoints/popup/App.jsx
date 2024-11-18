@@ -36,7 +36,7 @@ export default function App() {
     for (let i = 0; i < 7; i++) {
       const date = new Date();
       date.setDate(date.getDate() - i);
-      dates.push(date.toISOString().split("T")[0]);
+      dates.push(date.toLocaleDateString().split("T")[0]);
     }
     const summary = await generateAiSummaryForDates(dates);
 
@@ -64,7 +64,7 @@ export default function App() {
       let curDate = new Date();
       while (true) {
         curDate = subDays(curDate, 1);
-        if (entries[curDate.toISOString().split("T")[0]]) {
+        if (entries[curDate.toLocaleDateString().split("T")[0]]) {
           streakCounter += 1;
         } else {
           break;
