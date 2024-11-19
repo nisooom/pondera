@@ -46,6 +46,13 @@
     --accent: 199 61% 50%;
     --secondary: 199 67% 72%;
   }
+  body[data-theme="dark-blue"] {
+    --background: 0 0% 15%;
+    --foreground: 194 15% 77%;
+    --primary: 198 59% 52%;
+    --accent: 198 59% 52%;
+    --secondary: 198 24% 21%;
+  }
   /* .dark {
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;

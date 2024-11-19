@@ -49,7 +49,7 @@ export default function DateCarousel({ onSelectDate }) {
               >
                 <Card
                   className={cn(
-                    "rounded-lg border transition-colors",
+                    "rounded-lg border border-foreground/20 bg-background text-foreground transition-colors",
                     isToday(date) && "border border-primary bg-primary/10",
                     isSelected(date) && !isToday(date) && "bg-secondary",
                   )}

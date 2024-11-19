@@ -31,6 +31,15 @@ export default function WritePage() {
   useEffect(() => {
     document.body.setAttribute("data-theme", theme);
   }, [theme]);
+  useEffect(() => {
+    const tabTitles = {
+      journal: "Journal Entry",
+      grateful: "Gratitude List",
+      goals: "Goals Setting",
+    };
+
+    document.title = `${tabTitles[activeTab]} - My Journal`;
+  }, [activeTab]);
 
   const isTabCompleted = (tab) => {
     switch (tab) {

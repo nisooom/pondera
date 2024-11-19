@@ -23,7 +23,7 @@ const RecordedPage = () => {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
-      <div className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-background p-6 shadow-lg fade-in">
+      <div className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-background p-6 fade-in">
         <div className="flex items-center justify-between">
           <PonderaIcon />
           <Button
@@ -32,7 +32,7 @@ const RecordedPage = () => {
             onClick={handleCloseTab}
             className="h-8 w-8 rounded-full hover:text-white"
           >
-            <X className="h-4 w-4" />
+            {/* <X className="h-4 w-4" /> */}
           </Button>
         </div>
 
@@ -60,7 +60,7 @@ const RecordedPage = () => {
             </Button>
             <Button
               variant="ghost"
-              className="text-sm text-muted-foreground transition-colors hover:bg-gray-200 hover:text-foreground"
+              className="text-sm text-muted-foreground transition-colors hover:bg-gray-200/10 hover:text-foreground"
               onClick={() => window.history.back()}
             >
               <ArrowLeft className="mr-1 h-4 w-4" />

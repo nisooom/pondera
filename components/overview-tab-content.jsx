@@ -53,7 +53,7 @@ export const OverviewTabContent = ({ aiCachedSummary }) => {
 
       {/* Weekly AI Summary Section */}
       <h3 className="mb-2 text-lg font-semibold">Weekly Summary</h3>
-      <Card className="p-4">
+      <Card className="border-secondary bg-background p-4 text-foreground">
         {isLoading && (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -66,7 +66,7 @@ export const OverviewTabContent = ({ aiCachedSummary }) => {
 
         {!isLoading && aiSummary && !errorMessage && (
           <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground/50">
               Covering the last 7 days
             </p>
             <p className="text-sm">{aiSummary}</p>

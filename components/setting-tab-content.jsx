@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Trash2, Check } from "lucide-react"; // Ensure Check is imported
@@ -28,9 +28,11 @@ export const SettingTabContent = ({
   allSectionsMandatory,
   setAllSectionsMandatory,
   clearJournalFunc,
-  activeTheme, // Ensure activeTheme is passed as a prop
-  setActiveTheme, // Ensure setActiveTheme is passed as a prop
+  activeTheme,
+  setActiveTheme,
 }) => {
+  const carouselRef = useRef(null); // Create a ref for the carousel
+
   const handleThemeChange = (theme) => {
     document.body.setAttribute("data-theme", theme);
     handlePreferenceChange("theme", theme);
@@ -54,21 +56,52 @@ export const SettingTabContent = ({
       name: "blue",
       colors: ["bg-white", "bg-blue-600", "bg-blue-400", "bg-sky-400"],
     },
+    {
+      name: "dark-blue",
+      colors: ["bg-[#252525]", "bg-[#BDCACE]", "bg-[#3BA0CD]", "bg-[#293B43]"],
+    },
   ];
+
+  // Handle wheel event
+  const handleWheel = (event) => {
+    if (carouselRef.current) {
+      event.preventDefault(); // Prevent default scrolling
+      carouselRef.current.scrollBy({
+        left: event.deltaY > 0 ? 100 : -100, // Scroll left or right based on wheel direction
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const carouselElement = carouselRef.current;
+    if (carouselElement) {
+      carouselElement.addEventListener("wheel", handleWheel);
+    }
+
+    return () => {
+      if (carouselElement) {
+        carouselElement.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, []);
 
   return (
     <div>
       <div className="pb-2 font-bold text-primary">Themes</div>
-      <Carousel className="flex max-w-80 gap-0 overflow-x-auto">
+      <Carousel
+        ref={carouselRef}
+        className="flex max-w-80 gap-0 overflow-x-auto"
+      >
         <CarouselContent className="ml-1 flex gap-2 p-2">
           {themes.map((theme) => (
             <CarouselItem
               key={theme.name}
-              className="flex-shrink-0 basis-auto pl-0" // Set width to one-third of the container
+              className="flex-shrink-0 basis-auto pl-0"
             >
               <div
                 onClick={() => handleThemeChange(theme.name)}
-                className={`relative aspect-square h-24 cursor-pointer overflow-hidden border transition-all duration-300 ${activeTheme === theme.name ? "bg-opacity-50 ring-2 ring-primary" : ""}`}
+                className={`relative aspect-square h-24 cursor-pointer overflow-hidden rounded-sm border border-foreground/25 transition-all duration-300 ${activeTheme === theme.name ? "bg-opacity-50 ring-2 ring-primary" : ""}`}
                 aria-label={`Select ${theme.name} theme`}
               >
                 <div className="grid grid-cols-2 gap-1">
