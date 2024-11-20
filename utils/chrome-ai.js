@@ -1,22 +1,55 @@
 import { getAllEntries } from "./backend";
 
-export const getAiMood = async (text) => {
+export const getAiMood = async (textObj) => {
   console.log("Creating session and prompting AI");
   try {
     const { available } = await ai.languageModel.capabilities();
     const session = await ai.languageModel.create();
+    const combinedText = [
+      textObj.journal,
+      ...(textObj.grateful || []).filter(Boolean),
+      textObj.goals,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     if (available !== "no") {
       console.log("Session created");
-      console.log(text);
+      console.log(combinedText);
       console.log(session);
-      const result = await session.prompt(
-        "In just one Word. return a mood from the list - (Happy, Sad, Anxious, Angry, Frustrated, Neutral, Peaceful) that you think the person was in when they wrote the text" +
-          text,
-      );
-      console.log("Prompted AI");
+      const prompt = `
+      Reply with a single sentence using one of the below words that best describes the journal entry below
+      
+      VALID MOOD OPTIONS:
+      Happy
+      Sad
+      Anxious
+      Angry
+      Frustrated
+      Neutral
+      Peaceful
+ 
+      Journal entry below
+      `;
+      const result = await session.prompt(prompt + combinedText);
       console.log(result);
-      const newRes = result.split(" ")[0];
+      const moods = [
+        "Happy",
+        "Sad",
+        "Anxious",
+        "Angry",
+        "Frustrated",
+        "Neutral",
+        "Peaceful",
+      ];
+      // determine mood by schekcing if string respose contains any of the moods
+      const mood =
+        moods.find((m) => result.trim().toLowerCase() === m.toLowerCase()) ||
+        moods.find((m) => result.toLowerCase().includes(m.toLowerCase()));
+
+      console.log("Mood determined by AI", mood);
+
+      const newRes = mood;
       return newRes;
     } else {
       return {
