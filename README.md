@@ -22,7 +22,7 @@ To install the extension, follow these steps:
 2. Pull the repository
 3. Run `pnpm install` to install the dependencies
 4. Run `pnpm zip` to build the extension
-5. Go to chrome://extensions and enable developer mode
+5. Go to chrome://extensions and enable developer mode so that you can use the AI Capabilities.
 6. Click on "Load unpacked" and select the folder which contains the `manifest.json` file
 7. Extension is now installed and ready to use
 
