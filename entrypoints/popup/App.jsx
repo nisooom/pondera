@@ -18,7 +18,7 @@ import { OverviewTabContent } from "@/components/overview-tab-content";
 import { SettingTabContent } from "@/components/setting-tab-content";
 import { Button } from "@/components/ui/button";
 import { Logs } from "lucide-react";
-import { subDays } from "date-fns";
+import { set, subDays } from "date-fns";
 import { generateAiSummaryForDates } from "@/utils/chrome-ai";
 
 export default function App() {
@@ -30,7 +30,7 @@ export default function App() {
   const [didToday, setDidToday] = useState(false);
   const [aiCachedSummary, setAiCachedSummary] = useState(null);
   const [theme, setTheme] = useState("default");
-
+  const [isLoaded, setIsLoaded] = useState(false);
   const fetchWeeklySummary = async () => {
     const dates = [];
     for (let i = 0; i < 7; i++) {
@@ -84,6 +84,7 @@ export default function App() {
       setTheme(preferences.theme ?? "default");
       setColoredHeatmap(preferences.coloredHeatmap ?? true);
       setAllSectionsMandatory(preferences.allSectionsMandatory ?? false);
+      setIsLoaded(true);
     });
 
     fetchWeeklySummary();
@@ -115,6 +116,10 @@ export default function App() {
   const logAllEntries = () => {
     console.log(allEntries);
   };
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="px-3 py-2">

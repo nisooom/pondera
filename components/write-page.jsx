@@ -55,17 +55,14 @@ export default function WritePage() {
   };
 
   const handleNext = () => {
-    // Check if all sections are mandatory and current section is incomplete
     if (allSectionsMandatory && !isTabCompleted(activeTab)) {
       alert(`Please complete the ${activeTab} section before proceeding.`);
       return;
     }
 
-    // Proceed to next tab or save entry
     if (activeTab === "journal") setActiveTab("grateful");
     else if (activeTab === "grateful") setActiveTab("goals");
     else {
-      // Handle save/completion
       saveTodayEntry(formData);
       const recordedURL = chrome.runtime.getURL("popup.html#/recorded");
       window.location.href = recordedURL;
@@ -163,7 +160,7 @@ export default function WritePage() {
         </div>
 
         <Button
-          className="w-full bg-accent text-white hover:bg-accent"
+          className="w-full bg-accent text-white hover:bg-accent/80"
           onClick={handleNext}
         >
           {activeTab === "goals" ? "Save" : "Next"}

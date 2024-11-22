@@ -113,8 +113,8 @@ export const SettingTabContent = ({
                   ))}
                 </div>
                 {activeTheme === theme.name && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                    <Check className="h-4 w-4 text-white" />
+                  <div className="backdrop-blur-xs absolute inset-0 flex items-center justify-center bg-accent/50">
+                    <Check className="h-8 text-background" />
                   </div>
                 )}
               </div>
